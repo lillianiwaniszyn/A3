@@ -1,10 +1,25 @@
 package a3;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.Socket;
+import java.net.ServerSocket;
+import org.jdom.Document;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
+
 
 public class Driver {
+	
 	public static void main(String args[]) throws Exception {
+		String server = "localhost";
+		int port = Integer.parseInt("3000");
 		Object outputObj = null;
 		System.out.println("Sender Interface");
 		System.out.println("Please chose the number that corresponds to the object you would like to serialize");
@@ -48,15 +63,79 @@ public class Driver {
 			ObjectCollection collectionObj = new ObjectCollection();
 			outputObj = collectionObj;
 		}
+		serialize(outputObj, server, port);
 	}
 
 
 	
-		private static void printObjectsSelection() {
-			System.out.println("1. A simple object with only primitives for instance variables. You will be able to set values for these fields");
-			System.out.println("2. An object that contains references to other objects. The primitive instance variables will be able to be set by you.");
-			System.out.println("3. An object that contains an array of primitives. You will set the values in this array.");
-			System.out.println("4. An object that contains an array of object references.");
-			System.out.println("5. An object that uses an instance of one of Java's collection classes to refer to several other objects");
+	private static void printObjectsSelection() {
+		System.out.println(
+				"1. A simple object with only primitives for instance variables. You will be able to set values for these fields");
+		System.out.println(
+				"2. An object that contains references to other objects. The primitive instance variables will be able to be set by you.");
+		System.out.println("3. An object that contains an array of primitives. You will set the values in this array.");
+		System.out.println("4. An object that contains an array of object references.");
+		System.out.println(
+				"5. An object that uses an instance of one of Java's collection classes to refer to several other objects");
+	}
+		
+	private static void serialize(Object outputObj, String server, int port) throws IOException, Exception {
+		System.out.println("Serialize and transfer to receiver?");
+		System.out.println("1. Yes");
+		System.out.println("2. No");
+		BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
+		String input = bufferRead.readLine();
+		if (input.equals("1")) {
+			System.out.println("Serializing object...");
+			Document doc = Serializer.serialize(outputObj);
+			File aFile = createFile(doc);
+			transferFile(server, port, aFile);
+
+		} else if (input.equals("2")) {
+			System.exit(0);
+
+		} else {
+			System.out.println("Invalid input");
 		}
+	}
+
+
+
+	private static void transferFile(String server, int port, File aFile) {
+		System.out.println("Transferring file...");
+		try {
+			ServerSocket servsock = new ServerSocket(port);
+			Socket clientSock = servsock.accept();
+
+			//System.out.println("Connected to a client, " + clientSock.getInetAddress().toString());
+			System.out.println("Accepting a connection...");
+			
+			//Socket s = new Socket();
+			//OutputStream output = s.getOutputStream();
+			System.out.println("TEST");
+			FileInputStream fileInputStream = new FileInputStream(aFile);
+			byte[] buffer = new byte[1024 * 1024];
+			int bytesRead = 0;
+			//while ((bytesRead = fileInputStream.read(buffer)) > 0) {
+				//output.write(buffer, 0, bytesRead);
+			//}
+			fileInputStream.close();
+			//s.close();
+			System.out.println("Transfer Complete");
+		} catch (IOException e) {
+			System.out.println("connection refused");
+		}
+		
+	}
+
+
+
+	private static File createFile(Document doc) throws IOException {
+		XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
+		File aFile = new File("sentdata.xml");
+		BufferedWriter writer = new BufferedWriter(new FileWriter(aFile));
+		out.output(doc, writer);
+		writer.close();
+		return aFile;
+	}
 }
