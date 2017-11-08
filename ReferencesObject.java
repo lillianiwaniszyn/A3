@@ -1,9 +1,9 @@
 package a3;
 
 public class ReferencesObject {
-	public SimpleObject aKid;
+	public SimpleObject aSO;
 	
 	public ReferencesObject() {
-		aKid = new SimpleObject();
+		aSO = new SimpleObject();
 	}
 }
