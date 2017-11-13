@@ -19,7 +19,7 @@ public class Driver {
 	
 	public static void main(String args[]) throws Exception {
 		String server = "localhost";
-		int port = Integer.parseInt("3000");
+		int port = 8080;
 		Object outputObj = null;
 		System.out.println("Sender Interface");
 		System.out.println("Please chose the number that corresponds to the object you would like to serialize");
@@ -101,31 +101,26 @@ public class Driver {
 
 
 
-	private static void transferFile(String server, int port, File aFile) {
-		System.out.println("Transferring file...");
-		try {
-			ServerSocket servsock = new ServerSocket(port);
-			Socket clientSock = servsock.accept();
 
-			//System.out.println("Connected to a client, " + clientSock.getInetAddress().toString());
-			System.out.println("Accepting a connection...");
-			
-			//Socket s = new Socket();
-			//OutputStream output = s.getOutputStream();
-			System.out.println("TEST");
+	private static void transferFile(String server, int port, File aFile) {
+		
+		try {
+			//Socket s = new Socket(server, port);
+			Socket s=new Socket("localhost", 8080); // change ip address here
+			System.out.println("Transferring file...");
+			OutputStream output = s.getOutputStream();
 			FileInputStream fileInputStream = new FileInputStream(aFile);
 			byte[] buffer = new byte[1024 * 1024];
 			int bytesRead = 0;
-			//while ((bytesRead = fileInputStream.read(buffer)) > 0) {
-				//output.write(buffer, 0, bytesRead);
-			//}
+			while ((bytesRead = fileInputStream.read(buffer)) > 0) {
+				output.write(buffer, 0, bytesRead);
+			}
 			fileInputStream.close();
-			//s.close();
-			System.out.println("Transfer Complete");
+			s.close();
+			System.out.println("Transfer is complete");
 		} catch (IOException e) {
-			System.out.println("connection refused");
+			System.out.println(e);
 		}
-		
 	}
 
 
