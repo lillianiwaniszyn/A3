@@ -25,7 +25,7 @@ public class Driver {
 		else {
 			server = "localhost";
 		}
-		int port = 8089;
+		int port = 8090;
 		Object outputObj = null;
 		System.out.println("Please chose the number that corresponds to the object you would like to serialize");
 		printObjectsSelection();
@@ -90,8 +90,11 @@ public class Driver {
 		if (input.equals("1")) {
 			System.out.println("Serializing object...");
 			Document doc = Serializer.serialize(outputObj);
+			//serialize
 			File aFile = createFile(doc);
+			//make xml doc
 			transferFile(server, port, aFile);
+			//transfer to other computer
 
 		} else if (input.equals("2")) {
 			System.exit(0);

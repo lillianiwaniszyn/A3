@@ -20,7 +20,7 @@ public class TestDriver {
 		String server = "localhost";
 		int port = 8087;
 		SimpleObject simpleObj = new SimpleObject();
-		Driver.serialize(simpleObj, server, port);
+		Driver.initializeSerializer(simpleObj, server, port);
 		Document doc = Serializer.serialize(simpleObj);
 		File aFile = Driver.createFile(doc);
 		e = doc.getRootElement();
