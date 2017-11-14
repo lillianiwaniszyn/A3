@@ -23,7 +23,7 @@ public class Deserializer {
 		else if (valtype.equals("reference"))
 			return table.get(valueE.getText());
 		else {
-			returnVal = testType(fieldType, valueE);
+			returnVal = testTypePrimative(fieldType, valueE);
 			
 			
 		}
@@ -31,7 +31,7 @@ public class Deserializer {
 	}
 
 
-	private static Object testType(Class fieldType, Element valueE) {
+	private static Object testTypePrimative(Class fieldType, Element valueE) {
 		if (fieldType.equals(boolean.class)) {
 			if (valueE.getText().equals("true"))
 				return Boolean.TRUE;
