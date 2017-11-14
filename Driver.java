@@ -18,8 +18,14 @@ import org.jdom.output.XMLOutputter;
 public class Driver {
 	
 	public static void main(String args[]) throws Exception {
-		String server = "localhost"; //change later
-		int port = 8087;
+		String server; //change based on if we get command line arguments or not
+		if (args.length > 0) {
+			server = args[0];
+		}
+		else {
+			server = "localhost";
+		}
+		int port = 8089;
 		Object outputObj = null;
 		System.out.println("Please chose the number that corresponds to the object you would like to serialize");
 		printObjectsSelection();
@@ -62,7 +68,7 @@ public class Driver {
 			ObjectCollection collectionObj = new ObjectCollection();
 			outputObj = collectionObj;
 		}
-		serialize(outputObj, server, port);
+		initializeSerializer(outputObj, server, port);
 	}
 
 
@@ -75,7 +81,7 @@ public class Driver {
 		System.out.println("5. An object that uses an instance of one of Java's collection classes to refer to several other objects");
 	}
 		
-	public static void serialize(Object outputObj, String server, int port) throws IOException, Exception {
+	public static void initializeSerializer(Object outputObj, String server, int port) throws IOException, Exception {
 		System.out.println("Serialize and transfer to receiver?");
 		System.out.println("1. Yes");
 		System.out.println("2. No");

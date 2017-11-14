@@ -8,7 +8,7 @@ import org.jdom.JDOMException;
 
 public class Reciever {
 	public static void main(String[] args) throws IOException, IllegalArgumentException, IllegalAccessException {
-		int port = 8087;
+		int port = 8089;
 		ServerSocket serverSocket = null;
 		try {
 			serverSocket = new ServerSocket(port);
@@ -47,15 +47,15 @@ public class Reciever {
 		return obj;
 	}
 
-	public static void receiveFile(File aFile, Socket s) throws IOException, FileNotFoundException {
-		InputStream input = s.getInputStream();
+	public static void receiveFile(File aFile, Socket sock) throws IOException, FileNotFoundException {
+		InputStream input = sock.getInputStream();
 		FileOutputStream out = new FileOutputStream(aFile);
 		byte[] buffer = new byte[1024 * 1024];
 		int bytesReceived = 0;
 		System.out.println("receiving file");
 		while ((bytesReceived = input.read(buffer)) > 0) {
 			out.write(buffer, 0, bytesReceived);
-			System.out.println(bytesReceived + " Bytes received");
+			System.out.println(bytesReceived + " Bytes received.");
 			break;
 		}
 	}
