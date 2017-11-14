@@ -19,7 +19,7 @@ public class Driver {
 	
 	public static void main(String args[]) throws Exception {
 		String server = "localhost";
-		int port = 8080;
+		int port = 8083;
 		Object outputObj = null;
 		System.out.println("Sender Interface");
 		System.out.println("Please chose the number that corresponds to the object you would like to serialize");
@@ -69,14 +69,11 @@ public class Driver {
 
 	
 	private static void printObjectsSelection() {
-		System.out.println(
-				"1. A simple object with only primitives for instance variables. You will be able to set values for these fields");
-		System.out.println(
-				"2. An object that contains references to other objects. The primitive instance variables will be able to be set by you.");
+		System.out.println("1. A simple object with only primitives for instance variables. You will be able to set values for these fields");
+		System.out.println("2. An object that contains references to other objects. The primitive instance variables will be able to be set by you.");
 		System.out.println("3. An object that contains an array of primitives. You will set the values in this array.");
 		System.out.println("4. An object that contains an array of object references.");
-		System.out.println(
-				"5. An object that uses an instance of one of Java's collection classes to refer to several other objects");
+		System.out.println("5. An object that uses an instance of one of Java's collection classes to refer to several other objects");
 	}
 		
 	private static void serialize(Object outputObj, String server, int port) throws IOException, Exception {
@@ -105,8 +102,7 @@ public class Driver {
 	private static void transferFile(String server, int port, File aFile) {
 		
 		try {
-			//Socket s = new Socket(server, port);
-			Socket s=new Socket("localhost", 8080); // change ip address here
+			Socket s = new Socket(server, port);
 			System.out.println("Transferring file...");
 			OutputStream output = s.getOutputStream();
 			FileInputStream fileInputStream = new FileInputStream(aFile);
@@ -127,7 +123,7 @@ public class Driver {
 
 	private static File createFile(Document doc) throws IOException {
 		XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
-		File aFile = new File("sentdata.xml");
+		File aFile = new File("Sent_Data.xml");
 		BufferedWriter writer = new BufferedWriter(new FileWriter(aFile));
 		out.output(doc, writer);
 		writer.close();

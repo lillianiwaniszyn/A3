@@ -7,8 +7,8 @@ import org.jdom.Document;
 import org.jdom.JDOMException;
 
 public class Reciever {
-	public static void main(String[] args) throws IOException {
-		int port = 8080;
+	public static void main(String[] args) throws IOException, IllegalArgumentException, IllegalAccessException {
+		int port = 8083;
 		ServerSocket serverSocket = null;
 		try {
 			serverSocket = new ServerSocket(port);
@@ -29,6 +29,8 @@ public class Reciever {
 			}
 			receiveFile(aFile, sock);
 			Object obj = buildObject(aFile);
+			Inspector inspector = new Inspector();
+			inspector.inspect(obj, true);
 		}
 	}
 	private static Object buildObject(File aFile) {
@@ -36,6 +38,7 @@ public class Reciever {
 		Object obj = null;
 		try {
 			Document doc = (Document) builder.build(aFile);
+			obj = Deserializer.deserialize(doc);
 		} catch (JDOMException e) {
 			e.printStackTrace();
 		} catch (Exception e) {

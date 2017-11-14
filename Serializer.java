@@ -19,55 +19,12 @@ import org.jdom.output.XMLOutputter;
 public class Serializer {
 
 	public static org.jdom.Document serialize(Object obj) throws ArrayIndexOutOfBoundsException, IllegalArgumentException, Exception {
-		return serializeHelper(obj, new Document(new Element("serialized")),
-				new IdentityHashMap());
-	}
-
-	private static Document serializeHelper(Object source, Document target, Map table) throws ArrayIndexOutOfBoundsException, IllegalArgumentException, Exception {
-		String id = Integer.toString(table.size());
-		table.put(source, id);
-		Class sourceclass = source.getClass();
-
-		Element oElt = new Element("object");
-		oElt.setAttribute("class", sourceclass.getName());
-		oElt.setAttribute("id", id);
-		target.getRootElement().addContent(oElt);
-
-		if (!sourceclass.isArray()) {
-			Field[] fields = sourceclass.getDeclaredFields();
-			for (int i = 0; i < fields.length; i++) {
-				if (!Modifier.isPublic(fields[i].getModifiers()))
-					fields[i].setAccessible(true);
-
-				Element fElt = new Element("field");
-				fElt.setAttribute("name", fields[i].getName());
-				Class declClass = fields[i].getDeclaringClass();
-				fElt.setAttribute("declaringclass", declClass.getName());
-
-				Class fieldtype = fields[i].getType();
-				Object child = fields[i].get(source);
-
-				if (Modifier.isTransient(fields[i].getModifiers()))
-					child = null;
-
-				fElt.addContent(serializeVariable(fieldtype, child, target,
-						table));
-				oElt.addContent(fElt);
-			}
-		} else {
-			Class componentType = sourceclass.getComponentType();
-
-			int length = Array.getLength(source);
-			oElt.setAttribute("length", Integer.toString(length));
-			for (int i = 0; i < length; i++)
-				oElt.addContent(serializeVariable(componentType,
-						Array.get(source, i), target, table));
-		}
-		return target;
+		return serializeHelper(obj, new Document(new Element("serialized")), new IdentityHashMap());
 	}
 	private static Element serializeVariable(Class<?> fieldtype, Object child, Document target, Map table) throws Exception {
-		if (child == null)
+		if (child == null) {
 			return new Element("null");
+		}
 
 		else if (!fieldtype.isPrimitive()) {
 			Element reference = new Element("reference");
@@ -84,5 +41,44 @@ public class Serializer {
 			return value;
 		}
 	}
+
+	private static Document serializeHelper(Object source, Document target, Map table) throws ArrayIndexOutOfBoundsException, IllegalArgumentException, Exception {
+		String id = Integer.toString(table.size());
+		table.put(source, id);
+		Class sourceclass = source.getClass();
+		Element objectElement = new Element("object");
+		objectElement.setAttribute("class", sourceclass.getName());
+		objectElement.setAttribute("id", id);
+		target.getRootElement().addContent(objectElement);
+		//if not an array
+		if (!sourceclass.isArray()) {
+			Field[] fields = sourceclass.getDeclaredFields();
+			for (Field f: fields) {
+				if (!Modifier.isPublic(f.getModifiers())) {
+					f.setAccessible(true);
+				}
+				Element fieldElement = new Element("field");
+				fieldElement.setAttribute("name", f.getName());
+				Class declClass = f.getDeclaringClass();
+				fieldElement.setAttribute("declaringclass", declClass.getName());
+				Class fieldtype = f.getType();
+				Object child = f.get(source);
+				if (Modifier.isTransient(f.getModifiers())) {
+					child = null;
+				}
+				fieldElement.addContent(serializeVariable(fieldtype, child, target,table));
+				objectElement.addContent(fieldElement);
+			}
+		} 
+		else {
+			Class componentType = sourceclass.getComponentType();
+			int length = Array.getLength(source);
+			objectElement.setAttribute("length", Integer.toString(length));
+			for (int i = 0; i < length; i++)
+				objectElement.addContent(serializeVariable(componentType, Array.get(source, i), target, table));
+		}
+		return target;
+	}
+
 
 }

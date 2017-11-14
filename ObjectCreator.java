@@ -24,12 +24,7 @@ public class ObjectCreator {
 			else if(currentField.getType().getName().equals("char")) {
 				currentField.set(obj, input.charAt(0));
 			}
-			else if(currentField.getType().getName().equals("String")) {
-				currentField.set(obj, input.toString());
-			}
-			else if(currentField.getType().getName().equals("boolean")) {
-				currentField.set(obj, Boolean.parseBoolean(input));
-			}
+
 		}
 	}
 
