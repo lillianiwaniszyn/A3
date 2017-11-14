@@ -19,7 +19,7 @@ public class Driver {
 	
 	public static void main(String args[]) throws Exception {
 		String server = "localhost"; //change later
-		int port = 8083;
+		int port = 8087;
 		Object outputObj = null;
 		System.out.println("Please chose the number that corresponds to the object you would like to serialize");
 		printObjectsSelection();

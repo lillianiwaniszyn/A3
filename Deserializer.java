@@ -15,7 +15,7 @@ public class Deserializer {
 		assignFieldValues(table, objectList);
 		return table.get("0");
 	}
-	private static Object deserializeValue(Element valueE, Class fieldType,Map table) {
+	public static Object deserializeValue(Element valueE, Class fieldType,Map table) {
 		String valtype = valueE.getName();
 		if (valtype.equals("null"))
 			return null;
@@ -49,7 +49,7 @@ public class Deserializer {
 	}
 
 
-	private static void assignFieldValues(Map table, List objectList) throws ClassNotFoundException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+	public static void assignFieldValues(Map table, List objectList) throws ClassNotFoundException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		for (Object e: objectList) {
 			Element objectElement = (Element) e;
 			Object instance = table.get(objectElement.getAttributeValue("id"));
@@ -76,7 +76,7 @@ public class Deserializer {
 
 	
 
-	private static void createInstances(Map table, List objectList) throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public static void createInstances(Map table, List objectList) throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		for (int i=0; i<objectList.size(); i++) {
 			Element objectElement = (Element) objectList.get(i);
 			Class cls = Class.forName(objectElement.getAttributeValue("class"));

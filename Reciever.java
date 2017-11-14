@@ -8,7 +8,7 @@ import org.jdom.JDOMException;
 
 public class Reciever {
 	public static void main(String[] args) throws IOException, IllegalArgumentException, IllegalAccessException {
-		int port = 8083;
+		int port = 8087;
 		ServerSocket serverSocket = null;
 		try {
 			serverSocket = new ServerSocket(port);
