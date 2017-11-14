@@ -18,10 +18,9 @@ import org.jdom.output.XMLOutputter;
 public class Driver {
 	
 	public static void main(String args[]) throws Exception {
-		String server = "localhost";
+		String server = "localhost"; //change later
 		int port = 8083;
 		Object outputObj = null;
-		System.out.println("Sender Interface");
 		System.out.println("Please chose the number that corresponds to the object you would like to serialize");
 		printObjectsSelection();
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
@@ -76,7 +75,7 @@ public class Driver {
 		System.out.println("5. An object that uses an instance of one of Java's collection classes to refer to several other objects");
 	}
 		
-	private static void serialize(Object outputObj, String server, int port) throws IOException, Exception {
+	public static void serialize(Object outputObj, String server, int port) throws IOException, Exception {
 		System.out.println("Serialize and transfer to receiver?");
 		System.out.println("1. Yes");
 		System.out.println("2. No");
@@ -121,7 +120,7 @@ public class Driver {
 
 
 
-	private static File createFile(Document doc) throws IOException {
+	public static File createFile(Document doc) throws IOException {
 		XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
 		File aFile = new File("Sent_Data.xml");
 		BufferedWriter writer = new BufferedWriter(new FileWriter(aFile));

@@ -33,7 +33,7 @@ public class Reciever {
 			inspector.inspect(obj, true);
 		}
 	}
-	private static Object buildObject(File aFile) {
+	public static Object buildObject(File aFile) {
 		SAXBuilder builder = new SAXBuilder();
 		Object obj = null;
 		try {
@@ -47,7 +47,7 @@ public class Reciever {
 		return obj;
 	}
 
-	private static void receiveFile(File aFile, Socket s) throws IOException, FileNotFoundException {
+	public static void receiveFile(File aFile, Socket s) throws IOException, FileNotFoundException {
 		InputStream input = s.getInputStream();
 		FileOutputStream out = new FileOutputStream(aFile);
 		byte[] buffer = new byte[1024 * 1024];
