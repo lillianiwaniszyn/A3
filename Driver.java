@@ -20,12 +20,6 @@ public class Driver {
 	
 	public static void main(String args[]) throws Exception {
 		String server; //change based on if we get command line arguments or not
-		if (args.length > 0) {
-			server = args[0];
-		}
-		else {
-			server = "localhost";
-		}
 		int port = 8090;
 		Object outputObj = null;
 		System.out.println("Please chose the number that corresponds to the object you would like to serialize");
@@ -69,7 +63,7 @@ public class Driver {
 			ObjectCollection collectionObj = new ObjectCollection();
 			outputObj = collectionObj;
 		}
-		initializeSerializer(outputObj, server, port);
+		initializeSerializer(outputObj, port);
 	}
 	public static void initializeObject(Object obj) throws Exception {
 		System.out.println("Please set up the above fields for these objects");
@@ -104,13 +98,16 @@ public class Driver {
 		System.out.println("5. An object that uses an instance of one of Java's collection classes to refer to several other objects");
 	}
 		
-	public static void initializeSerializer(Object outputObj, String server, int port) throws IOException, Exception {
+	public static void initializeSerializer(Object outputObj, int port) throws IOException, Exception {
 		System.out.println("Serialize and transfer to receiver?");
 		System.out.println("1. Yes");
 		System.out.println("2. No");
 		BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
 		String input = bufferRead.readLine();
 		if (input.equals("1")) {
+			System.out.println("Please enter the IP address of the second computer (or localhost for local machine)");
+			BufferedReader bufferRead2 = new BufferedReader(new InputStreamReader(System.in));
+			String server = bufferRead2.readLine();
 			System.out.println("Serializing object...");
 			Document doc = Serializer.serialize(outputObj);
 			//serialize
