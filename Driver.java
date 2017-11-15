@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.lang.reflect.Field;
 import java.net.Socket;
 import java.net.ServerSocket;
 import org.jdom.Document;
@@ -35,13 +36,13 @@ public class Driver {
 		//A simple object with only primitives for instance variables.
 		if (selectionInt ==1) {
 			SimpleObject simpleObj = new SimpleObject();
-			ObjectCreator.initializeObject(simpleObj); 
+			initializeObject(simpleObj); 
 			outputObj = simpleObj;
 		}
 		//An object that contains references to other objects.
 		else if (selectionInt == 2) {
 			ReferencesObject referenceObj = new ReferencesObject();
-			ObjectCreator.initializeObject(referenceObj.aSO);
+			initializeObject(referenceObj.aSO);
 			outputObj = referenceObj;
 		}
 		//An object that contains an array of primitives. Set the array values in here
@@ -69,6 +70,28 @@ public class Driver {
 			outputObj = collectionObj;
 		}
 		initializeSerializer(outputObj, server, port);
+	}
+	public static void initializeObject(Object obj) throws Exception {
+		System.out.println("Please set up the above fields for these objects");
+		Class classObj = obj.getClass();
+		Field [] fieldObj = classObj.getFields();
+		for(Field x : fieldObj) {
+			x.setAccessible(true);
+			System.out.println("Name : " + x.getName());
+			Field currentField = classObj.getDeclaredField(x.getName());
+			System.out.println("Type : " + currentField.getType().toString());
+			System.out.println("Type in value: ");
+
+			BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+			String input = in.readLine();
+			if(currentField.getType().getName().equals("int")) {
+				currentField.set(obj, Integer.parseInt(input));
+			}
+			else if(currentField.getType().getName().equals("char")) {
+				currentField.set(obj, input.charAt(0));
+			}
+
+		}
 	}
 
 

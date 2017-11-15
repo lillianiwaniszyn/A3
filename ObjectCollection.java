@@ -9,9 +9,9 @@ public class ObjectCollection
 	}
 	
 	public ObjectCollection(ArrayList a) {
-		f1 = a;
+		myArrayList = a;
 
 	}
    
-    private ArrayList f1;
+    private ArrayList myArrayList;
 }
