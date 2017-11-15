@@ -20,7 +20,7 @@ public class Driver {
 	
 	public static void main(String args[]) throws Exception {
 		String server; //change based on if we get command line arguments or not
-		int port = 8090;
+		int port = 8091;
 		Object outputObj = null;
 		System.out.println("Please chose the number that corresponds to the object you would like to serialize");
 		printObjectsSelection();
